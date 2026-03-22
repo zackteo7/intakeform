@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Candidate Profile</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+:root{--bg:#F5F0E8;--card:#FDFAF4;--accent:#1B4B8A;--accent2:#2E6FC4;--gold:#C4892E;--text:#1A1A2E;--muted:#7A7A8C;--border:#E2D9C8;--input-bg:#F9F6EF;--success:#2E7D4F;--tag-bg:#EBF2FB;--tag-border:#AECBEE;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);font-family:'DM Sans',sans-serif;display:flex;justify-content:center;min-height:100vh;}
+.card{width:100%;max-width:480px;min-height:100vh;background:var(--card);display:flex;flex-direction:column;box-shadow:0 0 60px rgba(27,75,138,0.08);}
+.prog-track{height:3px;background:var(--border);}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width 0.4s ease;}
+.hdr{padding:16px 24px 0;display:flex;justify-content:space-between;align-items:center;}
+.hdr-label{font-size:10px;color:var(--muted);font-weight:700;letter-spacing:1.4px;text-transform:uppercase;}
+.hdr-count{font-size:10px;color:var(--muted);font-weight:600;}
+.logo-row{padding:18px 24px 0;display:flex;align-items:center;gap:9px;}
+.logo-mark{width:30px;height:30px;border-radius:8px;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:white;font-family:'DM Serif Display',serif;}
+.logo-name{font-size:13px;font-weight:600;color:var(--text);}
+.content{flex:1;padding:26px 24px 14px;display:flex;flex-direction:column;gap:18px;overflow-y:auto;}
+.section-title{font-family:'DM Serif Display',serif;font-size:26px;color:var(--text);line-height:1.2;}
+.section-title em{color:var(--accent);font-style:italic;}
+.subtitle{font-size:13px;color:var(--muted);margin-top:7px;line-height:1.7;}
+label.lbl{font-size:10px;color:var(--muted);font-weight:700;letter-spacing:1.1px;text-transform:uppercase;display:block;margin-bottom:6px;}
+input,select,textarea{width:100%;background:var(--input-bg);border:1.5px solid var(--border);border-radius:10px;padding:11px 13px;color:var(--text);font-size:14px;outline:none;font-family:'DM Sans',sans-serif;appearance:none;}
+input::placeholder,textarea::placeholder{color:#B8B0A0;}
+input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(27,75,138,0.08);}
+textarea{resize:vertical;min-height:72px;line-height:1.6;}
+select{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237A7A8C' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 13px center;padding-right:34px;}
+select option{background:white;color:var(--text);}
+.field-group{display:flex;flex-direction:column;gap:14px;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.opt-btn{padding:10px 13px;background:var(--input-bg);border:1.5px solid var(--border);border-radius:10px;color:var(--text);font-size:13px;cursor:pointer;text-align:left;font-family:'DM Sans',sans-serif;width:100%;transition:all 0.15s;}
+.opt-btn:hover{border-color:var(--accent2);background:var(--tag-bg);}
+.opt-btn.sel{background:var(--tag-bg);border-color:var(--accent);color:var(--accent);font-weight:600;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{padding:6px 12px;background:var(--input-bg);border:1.5px solid var(--border);border-radius:20px;color:var(--muted);font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.15s;}
+.chip:hover{border-color:var(--accent2);color:var(--accent2);}
+.chip.sel{background:var(--tag-bg);border-color:var(--accent);color:var(--accent);font-weight:700;}
+.skill-tag{display:inline-flex;align-items:center;padding:5px 10px;background:var(--tag-bg);border:1px solid var(--tag-border);border-radius:20px;font-size:11px;color:var(--accent);font-weight:600;}
+.skill-tag.custom{background:#F0F7F0;border-color:#A8D4A8;color:var(--success);}
+.consent-box{background:var(--input-bg);border:1.5px solid var(--border);border-radius:12px;padding:13px;display:flex;gap:12px;align-items:flex-start;cursor:pointer;}
+.cbx{min-width:20px;width:20px;height:20px;border-radius:5px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;transition:all 0.15s;flex-shrink:0;margin-top:1px;}
+.cbx.chk{background:var(--accent);border-color:var(--accent);}
+.cbx.chk::after{content:'✓';color:white;font-size:11px;font-weight:900;}
+.consent-text{font-size:12px;color:var(--muted);line-height:1.75;}
+.btn-primary{width:100%;padding:14px;background:var(--accent);border:none;border-radius:12px;color:white;font-size:15px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.15s;}
+.btn-primary:hover{background:var(--accent2);transform:translateY(-1px);box-shadow:0 4px 16px rgba(27,75,138,0.2);}
+.btn-primary:disabled{opacity:0.35;cursor:not-allowed;transform:none;box-shadow:none;}
+.btn-ghost{background:none;border:none;color:var(--muted);font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;padding:9px;text-align:center;width:100%;}
+.btn-ghost:hover{color:var(--text);}
+.btn-outline{padding:11px;background:transparent;border:1.5px solid var(--accent);border-radius:10px;color:var(--accent);font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.15s;width:100%;}
+.btn-outline:hover{background:var(--tag-bg);}
+.btn-suggest{display:flex;align-items:center;justify-content:center;gap:7px;padding:10px;background:linear-gradient(135deg,#EBF2FB,#F0F6FF);border:1.5px solid var(--tag-border);border-radius:10px;color:var(--accent);font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;width:100%;transition:all 0.15s;}
+.btn-suggest:hover{background:var(--tag-bg);border-color:var(--accent);}
+.footer{padding:10px 24px 26px;display:flex;flex-direction:column;gap:5px;}
+.info-card{background:#EBF2FB;border:1px solid var(--tag-border);border-radius:10px;padding:11px;font-size:12px;color:var(--accent);font-weight:500;line-height:1.65;}
+.success-card{background:#EBF7EF;border:1px solid #A3D4B5;border-radius:10px;padding:11px;font-size:12px;color:var(--success);font-weight:500;line-height:1.65;}
+.gold-card{background:#FDF5E8;border:1px solid #E8D0A0;border-radius:10px;padding:11px;font-size:12px;color:var(--gold);font-weight:500;line-height:1.65;}
+.hint-text{font-size:10px;color:var(--muted);margin-top:4px;}
+.badge{display:inline-flex;align-items:center;background:var(--tag-bg);border:1px solid var(--tag-border);border-radius:20px;padding:4px 12px;margin-bottom:13px;}
+.badge span{font-size:11px;color:var(--accent);font-weight:700;}
+.resume-opt{display:flex;align-items:center;gap:13px;padding:13px;background:var(--input-bg);border:1.5px solid var(--border);border-radius:12px;cursor:pointer;transition:all 0.15s;}
+.resume-opt:hover{border-color:var(--accent2);background:var(--tag-bg);}
+.resume-opt.sel{border-color:var(--accent);background:var(--tag-bg);}
+.resume-opt-radio{width:20px;height:20px;border-radius:50%;border:2px solid var(--border);flex-shrink:0;transition:all 0.15s;}
+.resume-opt.sel .resume-opt-radio{border-color:var(--accent);background:var(--accent);}
+.resume-opt.sel .resume-opt-radio::after{content:'';width:8px;height:8px;border-radius:50%;background:white;display:block;margin:4px auto;}
+.resume-opt-title{font-size:14px;font-weight:600;color:var(--text);}
+.resume-opt-desc{font-size:11px;color:var(--muted);margin-top:2px;}
+.builder-section{background:var(--input-bg);border:1.5px solid var(--border);border-radius:13px;padding:15px;display:flex;flex-direction:column;gap:13px;}
+.builder-section-title{font-size:11px;font-weight:700;color:var(--accent);letter-spacing:1px;text-transform:uppercase;}
+.job-entry{background:white;border:1.5px solid var(--border);border-radius:10px;padding:13px;display:flex;flex-direction:column;gap:10px;position:relative;}
+.remove-btn{position:absolute;top:9px;right:9px;background:none;border:none;color:var(--muted);cursor:pointer;font-size:18px;padding:2px 6px;line-height:1;}
+.remove-btn:hover{color:#C0392B;}
+.add-btn{display:flex;align-items:center;justify-content:center;gap:6px;padding:10px;background:transparent;border:1.5px dashed var(--border);border-radius:10px;color:var(--muted);font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;width:100%;}
+.add-btn:hover{border-color:var(--accent2);color:var(--accent2);}
+/* Achievement suggestions */
+.ach-suggestion{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:10px;background:white;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;transition:all 0.15s;}
+.ach-suggestion:hover{border-color:var(--accent2);background:var(--tag-bg);}
+.ach-text{font-size:12px;color:var(--text);line-height:1.5;flex:1;}
+.ach-metric{display:inline;background:#FEF3E2;border:1px solid #F5C842;border-radius:4px;padding:0px 4px;font-size:11px;color:#8B6914;font-weight:700;}
+.ach-use{font-size:10px;color:var(--accent);font-weight:700;white-space:nowrap;padding-top:2px;}
+/* Ranked company type */
+.rank-opt{display:flex;align-items:center;gap:10px;padding:11px 13px;background:var(--input-bg);border:1.5px solid var(--border);border-radius:10px;cursor:pointer;transition:all 0.15s;width:100%;}
+.rank-opt:hover{border-color:var(--accent2);background:var(--tag-bg);}
+.rank-opt.sel{border-color:var(--accent);background:var(--tag-bg);}
+.rank-badge{width:22px;height:22px;border-radius:50%;background:var(--accent);color:white;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.rank-placeholder{width:22px;height:22px;border-radius:50%;border:2px dashed var(--border);flex-shrink:0;}
+.rank-label{font-size:13px;color:var(--text);font-weight:400;}
+.rank-opt.sel .rank-label{color:var(--accent);font-weight:600;}
+/* Salary input with prefix */
+.salary-input-wrap{position:relative;}
+.salary-prefix{position:absolute;left:13px;top:50%;transform:translateY(-50%);font-size:13px;color:var(--muted);font-weight:600;pointer-events:none;}
+.salary-input{padding-left:52px!important;}
+/* Resume output */
+.resume-output{background:white;border:1.5px solid var(--border);border-radius:12px;padding:20px;font-size:13px;color:var(--text);line-height:1.75;max-height:380px;overflow-y:auto;}
+.resume-output h1{font-family:'DM Serif Display',serif;font-size:19px;color:var(--accent);margin-bottom:3px;}
+.resume-output h2{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--accent);margin-top:15px;margin-bottom:6px;border-bottom:1.5px solid var(--border);padding-bottom:4px;}
+.resume-output h3{font-size:13px;font-weight:700;margin-bottom:1px;}
+.resume-output .role-line{font-size:11px;color:var(--muted);margin-bottom:5px;}
+.resume-output ul{padding-left:16px;}
+.resume-output li{margin-bottom:3px;font-size:12px;}
+.resume-output p{margin-bottom:5px;}
+.loading-pulse{display:flex;align-items:center;gap:8px;padding:14px 0;color:var(--muted);font-size:12px;}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 1.2s infinite;}
+.dot:nth-child(2){animation-delay:.2s;}.dot:nth-child(3){animation-delay:.4s;}
+@keyframes pulse{0%,80%,100%{opacity:.3;transform:scale(.9)}40%{opacity:1;transform:scale(1.1)}}
+.complete-icon{width:68px;height:68px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:26px;color:white;margin:0 auto;}
+.complete-item{display:flex;align-items:center;gap:12px;background:var(--input-bg);border:1.5px solid var(--border);border-radius:10px;padding:12px;}
+.section-divider{height:1px;background:var(--border);margin:2px 0;}
+::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+button{transition:all 0.15s;}button:not(:disabled):active{transform:scale(.97);}
+</style>
+</head>
+<body>
+<div class="card" id="app"></div>
+<script>
+const INDUSTRIES=["Logistics & Supply Chain","Retail & E-Commerce","F&B & Hospitality","Technology & Digital","Finance & Banking","Healthcare & Medical","Manufacturing & Engineering","Government & Public Sector","Marketing & Media","Education","Real Estate & Construction","Other"];
+const EXP_OPTS=["Less than 1 year","1–2 years","3–5 years","6–10 years","11–15 years","More than 15 years"];
+const TIME_IN_ROLE=["Less than 6 months","6–12 months","1–2 years","2–4 years","4+ years"];
+const EDU_OPTS=["Secondary / O-Level","Polytechnic Diploma","ITE Certificate","Bachelor's Degree","Postgraduate / Master's","Professional Certification","Other"];
+const SALARY_RANGES=["Below SGD 2,000","SGD 2,000 – 3,000","SGD 3,000 – 4,000","SGD 4,000 – 5,000","SGD 5,000 – 7,000","SGD 7,000 – 10,000","SGD 10,000 – 15,000","Above SGD 15,000","Prefer not to say"];
+const MOTIVATOR_OPTS=["Salary & Benefits","Career Growth","Work-Life Balance","Job Stability","Company Culture","Learning Opportunities","Leadership Opportunity","Flexibility","Meaningful Work","Brand / Prestige"];
+const COMPANY_TYPES=["MNC / Large Corporation","Local Enterprise / SME","Startup / Scale-up","Government / Statutory Board","Non-Profit / Social Enterprise"];
+const WORK_RIGHTS=["Singapore Citizen","Permanent Resident (PR)","Employment Pass (EP)","S Pass","Work Permit","Dependant's Pass (with LOC)","Long Term Visit Pass (with LOC)","Student Pass","Others"];
+const SOURCE_OPTS=["At a physical event","Sent by a recruiter","Referred by someone","Found it online","Social media / LinkedIn"];
+const STEPS=["welcome","contact","current","trajectory","resume","intent","motivators","compensation","complete"];
+const STEP_LABELS={welcome:"Welcome",contact:"About You",current:"Where You Are Now",trajectory:"Career & Education",resume:"Your Resume",intent:"What's Next",motivators:"What Matters",compensation:"The Numbers",complete:"Done"};
+
+const GRAD_YEARS=Array.from({length:35},(_,i)=>(new Date().getFullYear()+2-i).toString());
+
+let step=0, generatingResume=false, generatedResumeHTML="";
+let suggestedSkills=[], loadingSkills=false;
+let jobSuggestions={}, loadingJobSuggestions={};
+
+let data={
+  pdpa:false,
+  // Contact
+  fullName:"",mobile:"",email:"",
+  source:"",sourceEventName:"",sourceRecruiterName:"",sourceReferrerName:"",
+  // Current
+  jobTitle:"",industry:"",experience:"",employment:"",
+  workRights:"",workRightsOther:"",
+  // Trajectory / Education
+  timeInRole:"",education:"",institution:"",fieldOfStudy:"",graduationYear:"",
+  selectedSkillChips:[],customSkillsText:"",
+  // Resume
+  summary:"",hasResume:null,
+  jobs:[{company:"",title:"",period:"",achievements:""}],
+  // Intent
+  jobStatus:"",timeline:"",roleType:"",
+  // Motivators
+  motivators:[],arrangement:"",companyTypeRanked:[],
+  // Compensation
+  curSalary:"",expSalaryExact:""
+};
+
+// Silent update — no re-render (for text inputs only)
+function us(f,v){data[f]=v;}
+// Render update — for buttons/selects
+function u(f,v){data[f]=v;render();}
+
+function toggleMotivator(m){
+  if(data.motivators.includes(m))data.motivators=data.motivators.filter(x=>x!==m);
+  else if(data.motivators.length<3)data.motivators.push(m);
+  render();
+}
+function toggleSkillChip(s){
+  if(data.selectedSkillChips.includes(s))data.selectedSkillChips=data.selectedSkillChips.filter(x=>x!==s);
+  else data.selectedSkillChips.push(s);
+  render();
+}
+function toggleCompanyRank(c){
+  if(data.companyTypeRanked.includes(c))data.companyTypeRanked=data.companyTypeRanked.filter(x=>x!==c);
+  else if(data.companyTypeRanked.length<3)data.companyTypeRanked=[...data.companyTypeRanked,c];
+  render();
+}
+function addJob(){if(data.jobs.length<4){data.jobs.push({company:"",title:"",period:"",achievements:""});render();}}
+function removeJob(i){data.jobs.splice(i,1);delete jobSuggestions[i];render();}
+function ujs(i,f,v){data.jobs[i][f]=v;}
+function goNext(){step=Math.min(step+1,STEPS.length-1);render();}
+function goBack(){step=Math.max(step-1,0);render();}
+
+async function suggestSkills(){
+  if(!data.jobTitle)return;
+  loadingSkills=true;suggestedSkills=[];render();
+  const prompt=`List 12 highly relevant professional skills for a "${data.jobTitle}" in Singapore. Return ONLY a valid JSON array of short skill names (2-4 words max). No markdown, no explanation.`;
+  try{
+    const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:300,messages:[{role:"user",content:prompt}]})});
+    const d=await res.json();
+    const txt=d.content?.[0]?.text||"[]";
+    suggestedSkills=JSON.parse(txt.replace(/```json|```/g,'').trim());
+  }catch(e){suggestedSkills=[];}
+  loadingSkills=false;render();
+}
+
+async function suggestAchievements(i){
+  const title=data.jobs[i].title||data.jobTitle||"professional";
+  loadingJobSuggestions={...loadingJobSuggestions,[i]:true};render();
+  const prompt=`Generate 5 achievement statement starters for a "${title}" role in Singapore. Each must: start with a strong action verb, include [metric] or [number] placeholders, be under 15 words. Return ONLY a valid JSON array of strings. No markdown.`;
+  try{
+    const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:400,messages:[{role:"user",content:prompt}]})});
+    const d=await res.json();
+    const txt=d.content?.[0]?.text||"[]";
+    jobSuggestions={...jobSuggestions,[i]:JSON.parse(txt.replace(/```json|```/g,'').trim())};
+  }catch(e){jobSuggestions={...jobSuggestions,[i]:[]};}
+  loadingJobSuggestions={...loadingJobSuggestions,[i]:false};render();
+}
+
+function useAchievement(jobIdx, text){
+  const current=data.jobs[jobIdx].achievements;
+  data.jobs[jobIdx].achievements=current?current+'\n'+text:text;
+  const ta=document.querySelector(`textarea[data-ji="${jobIdx}"][data-jf="achievements"]`);
+  if(ta)ta.value=data.jobs[jobIdx].achievements;
+}
+
+async function generateResume(){
+  generatingResume=true;generatedResumeHTML="";render();
+  const jobsText=data.jobs.filter(j=>j.company).map((j,i)=>`Role ${i+1}: ${j.title} at ${j.company} (${j.period})\nAchievements: ${j.achievements}`).join('\n\n');
+  const allSkills=[...data.selectedSkillChips,...data.customSkillsText.split(',').map(s=>s.trim()).filter(s=>s)].join(', ');
+  const prompt=`Professional resume writer for Singapore job market. Create clean ATS-friendly resume in HTML.
+Candidate: ${data.fullName||"Candidate"} | Title: ${data.jobTitle||""} | Industry: ${data.industry||""} | Experience: ${data.experience||""} | Education: ${data.education||""} at ${data.institution||""} (${data.fieldOfStudy||""}, ${data.graduationYear||""}) | Skills: ${allSkills||data.customSkillsText||""} | Hint: ${data.summary||""}
+Work History:\n${jobsText||"No roles provided"}
+Return ONLY HTML using: <h1> for name, <p class="role-line"> for subtitle, <h2> for PROFESSIONAL SUMMARY / WORK EXPERIENCE / EDUCATION / KEY SKILLS, <h3> for job titles, <p class="role-line"> for company/date, <ul><li> for bullets, <p> for text. No html/head/body/style/markdown.`;
+  try{
+    const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,messages:[{role:"user",content:prompt}]})});
+    const d=await res.json();
+    generatedResumeHTML=d.content?.[0]?.text||"<p>Unable to generate. Try again.</p>";
+  }catch(e){generatedResumeHTML="<p>Connection error. Please try again.</p>";}
+  generatingResume=false;render();
+}
+
+function copyResume(){
+  const el=document.getElementById('resume-content');if(!el)return;
+  navigator.clipboard.writeText(el.innerText).then(()=>{
+    const b=document.getElementById('copy-btn');if(b){b.textContent="✓ Copied!";setTimeout(()=>{b.textContent="Copy";},2000);}
+  });
+}
+
+function bindInputs(){
+  document.querySelectorAll('input[data-field],textarea[data-field]').forEach(el=>{
+    el.addEventListener('input',function(){us(this.dataset.field,this.value);});
+  });
+  document.querySelectorAll('[data-ji][data-jf]').forEach(el=>{
+    el.addEventListener('input',function(){ujs(parseInt(this.dataset.ji),this.dataset.jf,this.value);});
+  });
+}
+
+function selOpt(f,opts){
+  return`<select onchange="u('${f}',this.value)"><option value="">Select one</option>${opts.map(o=>`<option ${data[f]===o?'selected':''}>${o}</option>`).join('')}</select>`;
+}
+function optBtns(f,opts){
+  return`<div style="display:flex;flex-direction:column;gap:7px">${opts.map(o=>`<button class="opt-btn ${data[f]===o?'sel':''}" onclick="u('${f}','${o}')">${o}</button>`).join('')}</div>`;
+}
+function footer(label="Continue →",back=true){
+  return`<div class="footer"><button class="btn-primary" onclick="goNext()">${label}</button>${back?`<button class="btn-ghost" onclick="goBack()">← Back</button>`:''}</div>`;
+}
+
+// Highlight [metric] and [number] placeholders in suggestion text
+function highlightPlaceholders(text){
+  return text.replace(/\[(metric|number|%|amount|count)\]/gi,m=>`<span class="ach-metric">${m}</span>`);
+}
+
+function renderStep(){
+  const s=STEPS[step];
+
+  // ─── WELCOME ───
+  if(s==="welcome")return`
+    <div class="content">
+      <div><div class="badge"><span>🇸🇬 Singapore Talent Network</span></div>
+        <div class="section-title">Let's build your<br><em>career profile.</em></div>
+        <div class="subtitle">Takes <strong>5–8 minutes.</strong> Your answers help us match you to the right opportunities — not just any open role.</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:9px">
+        ${[["🔒","Protected under Singapore's PDPA"],["🎯","Better matches, fewer irrelevant alerts"],["📱","Update anytime via WhatsApp"]].map(([ic,t])=>`<div style="display:flex;align-items:center;gap:11px"><span style="font-size:16px">${ic}</span><span style="font-size:12px;color:var(--muted)">${t}</span></div>`).join('')}
+      </div>
+      <div class="consent-box" onclick="u('pdpa',${!data.pdpa})">
+        <div class="cbx ${data.pdpa?'chk':''}"></div>
+        <div class="consent-text">I consent to <strong>[Company Name]</strong> collecting, using, and storing my personal data for job matching in accordance with Singapore's <strong>Personal Data Protection Act (PDPA)</strong>. I may withdraw consent at any time.</div>
+      </div>
+    </div>
+    <div class="footer"><button class="btn-primary" ${!data.pdpa?'disabled':''} onclick="goNext()">Get Started →</button></div>`;
+
+  // ─── CONTACT ───
+  if(s==="contact")return`
+    <div class="content">
+      <div><div class="section-title">Nice to<br><em>meet you.</em></div><div class="subtitle">Start with the basics.</div></div>
+      <div class="field-group">
+        <div><label class="lbl">Full Name</label><input data-field="fullName" placeholder="As per NRIC" value="${data.fullName}"></div>
+        <div><label class="lbl">Mobile (WhatsApp)</label><input data-field="mobile" placeholder="+65 9XXX XXXX" value="${data.mobile}" type="tel"></div>
+        <div><label class="lbl">Email Address</label><input data-field="email" placeholder="you@email.com" value="${data.email}" type="email"></div>
+
+        <div><label class="lbl">How did you find out about us?</label>
+          <div style="display:flex;flex-direction:column;gap:7px">
+            ${SOURCE_OPTS.map(o=>`<button class="opt-btn ${data.source===o?'sel':''}" onclick="u('source','${o}')">${o}</button>`).join('')}
+          </div>
+        </div>
+
+        ${data.source==="At a physical event"?`
+          <div><label class="lbl">Name of the Event</label>
+            <input data-field="sourceEventName" placeholder="e.g. SGJobFair 2025, TechConnect Summit" value="${data.sourceEventName}">
+          </div>`:''
+        }
+        ${data.source==="Sent by a recruiter"?`
+          <div><label class="lbl">Recruiter's Name</label>
+            <input data-field="sourceRecruiterName" placeholder="Which recruiter sent you this?" value="${data.sourceRecruiterName}">
+          </div>`:''
+        }
+        ${data.source==="Referred by someone"?`
+          <div><label class="lbl">Who Referred You?</label>
+            <input data-field="sourceReferrerName" placeholder="Name of the person who referred you" value="${data.sourceReferrerName}">
+          </div>`:''
+        }
+      </div>
+    </div>${footer()}`;
+
+  // ─── CURRENT ───
+  if(s==="current")return`
+    <div class="content">
+      <div><div class="section-title">Where are you<br><em>right now?</em></div><div class="subtitle">Tell us about your current professional situation.</div></div>
+      <div class="field-group">
+        <div><label class="lbl">Current Job Title</label><input data-field="jobTitle" placeholder="e.g. Operations Manager" value="${data.jobTitle}"></div>
+        <div><label class="lbl">Industry</label>
+          <select onchange="u('industry',this.value)"><option value="">Select your industry</option>
+            ${INDUSTRIES.map(i=>`<option ${data.industry===i?'selected':''}>${i}</option>`).join('')}
+          </select>
+        </div>
+        <div><label class="lbl">Total Working Experience</label>${selOpt('experience',EXP_OPTS)}</div>
+        <div><label class="lbl">Employment Type</label>${optBtns('employment',["Full-time","Part-time","Contract / Freelance","Currently not working"])}</div>
+
+        <div class="section-divider"></div>
+
+        <div><label class="lbl">Right to Work in Singapore</label>
+          <div style="display:flex;flex-direction:column;gap:7px">
+            ${WORK_RIGHTS.map(o=>`<button class="opt-btn ${data.workRights===o?'sel':''}" onclick="u('workRights','${o}')">${o}</button>`).join('')}
+          </div>
+        </div>
+        ${data.workRights==="Others"?`
+          <div><label class="lbl">Please Specify</label>
+            <input data-field="workRightsOther" placeholder="e.g. LTVP+, IPA Letter" value="${data.workRightsOther}">
+          </div>`:''
+        }
+      </div>
+    </div>${footer()}`;
+
+  // ─── TRAJECTORY ───
+  if(s==="trajectory"){
+    const allSkills=[...data.selectedSkillChips,...data.customSkillsText.split(',').map(s=>s.trim()).filter(s=>s)];
+    return`
+    <div class="content">
+      <div><div class="section-title">Career &<br><em>education.</em></div><div class="subtitle">Help us understand your background in full.</div></div>
+      <div class="field-group">
+
+        <div><label class="lbl">Time in Current Role</label>${selOpt('timeInRole',TIME_IN_ROLE)}</div>
+
+        <div class="section-divider"></div>
+
+        <div><label class="lbl">Highest Qualification</label>${selOpt('education',EDU_OPTS)}</div>
+        ${data.education?`
+          <div><label class="lbl">Institution Name</label>
+            <input data-field="institution" placeholder="e.g. NUS, Ngee Ann Polytechnic, RMIT" value="${data.institution}">
+          </div>
+          <div class="two-col">
+            <div><label class="lbl">Field of Study / Major</label>
+              <input data-field="fieldOfStudy" placeholder="e.g. Business Admin" value="${data.fieldOfStudy}">
+            </div>
+            <div><label class="lbl">Graduation Year</label>
+              <select onchange="u('graduationYear',this.value)">
+                <option value="">Year</option>
+                ${GRAD_YEARS.map(y=>`<option ${data.graduationYear===y?'selected':''}>${y}</option>`).join('')}
+              </select>
+            </div>
+          </div>`:''
+        }
+
+        <div class="section-divider"></div>
+
+        <div>
+          <label class="lbl">Your Key Skills</label>
+          ${!data.jobTitle?`<div class="info-card" style="font-size:11px">Fill in your job title first to get AI skill suggestions</div>`
+          :loadingSkills?`<div class="loading-pulse"><div class="dot"></div><div class="dot"></div><div class="dot"></div><span>Finding skills for ${data.jobTitle}…</span></div>`
+          :suggestedSkills.length===0?`<button class="btn-suggest" onclick="suggestSkills()">✨ Suggest skills for "${data.jobTitle}"</button>`
+          :`<div>
+              <div style="font-size:10px;color:var(--muted);margin-bottom:7px;font-weight:700;letter-spacing:1px;text-transform:uppercase">Suggested — tap to select</div>
+              <div class="chips">${suggestedSkills.map(sk=>`<button class="chip ${data.selectedSkillChips.includes(sk)?'sel':''}" onclick="toggleSkillChip('${sk.replace(/'/g,"\\'")}')">+ ${sk}</button>`).join('')}</div>
+              <button onclick="suggestSkills()" style="margin-top:8px;background:none;border:none;font-size:11px;color:var(--muted);cursor:pointer;font-family:'DM Sans',sans-serif;text-decoration:underline">↻ Refresh suggestions</button>
+            </div>`
+          }
+          <div style="margin-top:10px">
+            <label class="lbl">Add your own</label>
+            <input data-field="customSkillsText" placeholder="e.g. SAP, Stakeholder Management, Lean Six Sigma" value="${data.customSkillsText}">
+            <div class="hint-text">Separate with commas</div>
+          </div>
+          ${allSkills.length>0?`
+            <div style="margin-top:10px">
+              <div style="font-size:10px;color:var(--muted);margin-bottom:6px;font-weight:700;letter-spacing:1px;text-transform:uppercase">Your Skills (${allSkills.length})</div>
+              <div class="chips">
+                ${data.selectedSkillChips.map(sk=>`<span class="skill-tag">${sk}</span>`).join('')}
+                ${data.customSkillsText.split(',').map(s=>s.trim()).filter(s=>s).map(s=>`<span class="skill-tag custom">${s}</span>`).join('')}
+              </div>
+            </div>`:''
+          }
+        </div>
+      </div>
+    </div>${footer()}`;
+  }
+
+  // ─── RESUME ───
+  if(s==="resume")return`
+    <div class="content">
+      <div><div class="section-title">Your<br><em>resume.</em></div><div class="subtitle">Do you have an existing resume ready to share?</div></div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div class="resume-opt ${data.hasResume===true?'sel':''}" onclick="u('hasResume',true)">
+          <div class="resume-opt-radio"></div>
+          <div><div class="resume-opt-title">✅  Yes, I have a resume</div><div class="resume-opt-desc">I'll share it with the recruiter separately</div></div>
+        </div>
+        <div class="resume-opt ${data.hasResume===false?'sel':''}" onclick="u('hasResume',false)">
+          <div class="resume-opt-radio"></div>
+          <div><div class="resume-opt-title">✏️  No — help me build one</div><div class="resume-opt-desc">We'll generate a modern resume from your profile using AI</div></div>
+        </div>
+      </div>
+      ${data.hasResume===true?`<div class="success-card">✓  Our recruiter will request your resume via WhatsApp after reviewing your profile. No upload needed now.</div>`:''}
+      ${data.hasResume===false?`
+        <div class="info-card">Fill in your work history below. Use the AI suggestions to get started on achievements — then replace <strong>[metric]</strong> with your actual numbers.</div>
+        <div class="builder-section">
+          <div class="builder-section-title">📋 Work History</div>
+          ${data.jobs.map((j,i)=>`
+            <div class="job-entry">
+              ${data.jobs.length>1?`<button class="remove-btn" onclick="removeJob(${i})">×</button>`:''}
+              <div><label class="lbl">Company</label><input data-ji="${i}" data-jf="company" placeholder="e.g. DHL Singapore" value="${j.company}"></div>
+              <div><label class="lbl">Job Title</label><input data-ji="${i}" data-jf="title" placeholder="e.g. Logistics Coordinator" value="${j.title}"></div>
+              <div><label class="lbl">Period</label><input data-ji="${i}" data-jf="period" placeholder="e.g. Jan 2021 – Dec 2023" value="${j.period}"></div>
+              <div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+                  <label class="lbl" style="margin-bottom:0">Key Achievements</label>
+                  ${!loadingJobSuggestions[i]?`<button onclick="suggestAchievements(${i})" style="background:none;border:none;font-size:11px;color:var(--accent);font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif">✨ Suggest</button>`:''}
+                </div>
+                ${loadingJobSuggestions[i]?`<div class="loading-pulse"><div class="dot"></div><div class="dot"></div><div class="dot"></div><span>Generating starters…</span></div>`:''}
+                ${jobSuggestions[i]&&!loadingJobSuggestions[i]?`
+                  <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:9px">
+                    ${jobSuggestions[i].map((a,ai)=>`
+                      <div class="ach-suggestion" onclick="useAchievement(${i},'${a.replace(/'/g,"\\'").replace(/"/g,"&quot;")}')">
+                        <span class="ach-text">${highlightPlaceholders(a)}</span>
+                        <span class="ach-use">Use →</span>
+                      </div>`).join('')}
+                    <div style="font-size:10px;color:var(--muted)">Tap a starter to add it, then replace <span style="background:#FEF3E2;border:1px solid #F5C842;border-radius:3px;padding:0 3px;font-weight:700;color:#8B6914">[metric]</span> with your actual numbers</div>
+                  </div>`:''
+                }
+                <textarea data-ji="${i}" data-jf="achievements" placeholder="e.g. Reduced delivery lead time by 22% through route optimisation…">${j.achievements}</textarea>
+              </div>
+            </div>`).join('')}
+          ${data.jobs.length<4?`<button class="add-btn" onclick="addJob()">+ Add Another Role</button>`:''}
+        </div>
+        <div class="builder-section">
+          <div class="builder-section-title">💡 Summary Hint (Optional)</div>
+          <textarea data-field="summary" placeholder="Anything to highlight? e.g. 'Transitioning from ops to BD' or 'Looking for a managerial role'…">${data.summary}</textarea>
+        </div>
+        ${!generatingResume&&!generatedResumeHTML?`<button class="btn-outline" onclick="generateResume()">✨  Generate My Resume with AI</button>`:''}
+        ${generatingResume?`<div class="loading-pulse"><div class="dot"></div><div class="dot"></div><div class="dot"></div><span>Building your resume…</span></div>`:''}
+        ${generatedResumeHTML&&!generatingResume?`
+          <div style="display:flex;flex-direction:column;gap:9px">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span style="font-size:10px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:1px">Generated Resume</span>
+              <div style="display:flex;gap:7px">
+                <button id="copy-btn" onclick="copyResume()" style="padding:5px 10px;font-size:11px;border:1.5px solid var(--border);border-radius:7px;background:white;cursor:pointer;font-family:'DM Sans',sans-serif;color:var(--text)">Copy</button>
+                <button onclick="generateResume()" style="padding:5px 10px;font-size:11px;border:1.5px solid var(--accent);border-radius:7px;background:transparent;cursor:pointer;font-family:'DM Sans',sans-serif;color:var(--accent)">Redo</button>
+              </div>
+            </div>
+            <div class="resume-output" id="resume-content">${generatedResumeHTML}</div>
+            <div class="gold-card">💾  Saved to your profile and shared with our recruiter team.</div>
+          </div>`:''}
+      `:''}
+    </div>
+    <div class="footer"><button class="btn-primary" onclick="goNext()">Continue →</button><button class="btn-ghost" onclick="goBack()">← Back</button></div>`;
+
+  // ─── INTENT ───
+  if(s==="intent")return`
+    <div class="content">
+      <div><div class="section-title">What's next<br><em>for you?</em></div><div class="subtitle">Be honest — this helps us reach you at the right time, not just when we have a vacancy.</div></div>
+      <div class="field-group">
+        <div><label class="lbl">Where are you right now?</label>
+          <div style="display:flex;flex-direction:column;gap:7px">
+            ${[{v:"active",l:"🔍  Actively looking for a new role"},{v:"open",l:"👀  Open to the right opportunity"},{v:"passive",l:"😌  Happy for now, not looking"}].map(o=>`<button class="opt-btn ${data.jobStatus===o.v?'sel':''}" onclick="u('jobStatus','${o.v}')">${o.l}</button>`).join('')}
+          </div>
+        </div>
+        ${(data.jobStatus==="active"||data.jobStatus==="open")?`
+          <div><label class="lbl">Timeline to Move</label>
+            <div style="display:flex;flex-direction:column;gap:7px">
+              ${["Immediately / within 1 month","1–3 months","3–6 months","Just exploring for now"].map(o=>`<button class="opt-btn ${data.timeline===o?'sel':''}" onclick="u('timeline','${o}')">${o}</button>`).join('')}
+            </div>
+          </div>`:''
+        }
+        <div><label class="lbl">Role Type You're Open To</label>
+          <div style="display:flex;flex-direction:column;gap:7px">
+            ${["Same function as current role","Different function entirely","Open to both"].map(o=>`<button class="opt-btn ${data.roleType===o?'sel':''}" onclick="u('roleType','${o}')">${o}</button>`).join('')}
+          </div>
+        </div>
+      </div>
+    </div>${footer()}`;
+
+  // ─── MOTIVATORS ───
+  if(s==="motivators")return`
+    <div class="content">
+      <div><div class="section-title">What matters<br><em>most to you?</em></div><div class="subtitle">Pick up to <strong>3 motivators</strong>. Rank your preferred company types in order.</div></div>
+      <div class="field-group">
+        <div>
+          <label class="lbl">Top Motivators (up to 3)</label>
+          <div class="chips">${MOTIVATOR_OPTS.map(m=>`<button class="chip ${data.motivators.includes(m)?'sel':''}" onclick="toggleMotivator('${m}')">${m}</button>`).join('')}</div>
+          <div class="hint-text">${data.motivators.length}/3 selected</div>
+        </div>
+        <div><label class="lbl">Work Arrangement</label>${optBtns('arrangement',["On-site","Hybrid","Fully Remote","No preference"])}</div>
+
+        <div class="section-divider"></div>
+
+        <div>
+          <label class="lbl">Preferred Company Type</label>
+          <div class="hint-text" style="margin-bottom:8px">Select up to 3 — in order of preference. First tap = 1st choice.</div>
+          <div style="display:flex;flex-direction:column;gap:7px">
+            ${COMPANY_TYPES.map(c=>{
+              const rank=data.companyTypeRanked.indexOf(c);
+              const rankNum=rank>=0?rank+1:null;
+              const labels=["1st","2nd","3rd"];
+              return`<button class="rank-opt ${rank>=0?'sel':''}" onclick="toggleCompanyRank('${c}')">
+                ${rankNum?`<div class="rank-badge">${rankNum}</div>`:`<div class="rank-placeholder"></div>`}
+                <span class="rank-label">${c}</span>
+                ${rankNum?`<span style="margin-left:auto;font-size:10px;color:var(--accent);font-weight:700">${labels[rank]} choice</span>`:`<span style="margin-left:auto;font-size:10px;color:var(--muted)">${data.companyTypeRanked.length<3?'tap to rank':''}</span>`}
+              </button>`;
+            }).join('')}
+          </div>
+          ${data.companyTypeRanked.length>0?`<div class="hint-text" style="margin-top:6px">Tap a selected option to remove it from your ranking</div>`:''}
+        </div>
+      </div>
+    </div>${footer()}`;
+
+  // ─── COMPENSATION ───
+  if(s==="compensation")return`
+    <div class="content">
+      <div><div class="section-title">Let's talk<br><em>numbers.</em></div><div class="subtitle">Confidential. Used only to match you to appropriately scoped roles.</div></div>
+      <div class="field-group">
+        <div><label class="lbl">Current Monthly Salary (SGD)</label>
+          ${selOpt('curSalary',SALARY_RANGES)}
+          <div class="hint-text">Approximate range is fine</div>
+        </div>
+        <div><label class="lbl">Expected Monthly Salary (SGD)</label>
+          <div class="salary-input-wrap">
+            <span class="salary-prefix">SGD</span>
+            <input class="salary-input" data-field="expSalaryExact" placeholder="e.g. 6500" value="${data.expSalaryExact}" type="number" min="0">
+          </div>
+          <div class="hint-text">Enter your exact expected base salary per month</div>
+        </div>
+        <div class="info-card">🔒  Salary data is never shared with any employer without your explicit consent.</div>
+      </div>
+    </div>
+    <div class="footer"><button class="btn-primary" onclick="goNext()">Submit Profile →</button><button class="btn-ghost" onclick="goBack()">← Back</button></div>`;
+
+  // ─── COMPLETE ───
+  if(s==="complete")return`
+    <div class="content" style="justify-content:center;align-items:center;text-align:center;gap:22px;padding-top:36px">
+      <div class="complete-icon">✓</div>
+      <div>
+        <div class="section-title" style="text-align:center">${data.fullName?`You're in,<br><em>${data.fullName.split(' ')[0]}.</em>`:`You're<br><em>all set.</em>`}</div>
+        <div class="subtitle" style="text-align:center;margin-top:10px">Your profile is with our team. We'll reach out via WhatsApp when there's a genuine fit — not before.</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;width:100%">
+        ${[["📱","Monthly WhatsApp check-in — just one question"],["🎯","We only contact you when the role is relevant"],["🔄","Update anytime — just message us directly"]].map(([ic,t])=>`<div class="complete-item"><span style="font-size:17px">${ic}</span><span style="font-size:12px;color:var(--muted);text-align:left">${t}</span></div>`).join('')}
+      </div>
+    </div>`;
+}
+
+function render(){
+  const s=STEPS[step],pct=step/(STEPS.length-1);
+  document.getElementById('app').innerHTML=`
+    <div class="prog-track"><div class="prog-fill" style="width:${pct*100}%"></div></div>
+    ${s==="welcome"?`<div class="logo-row"><div class="logo-mark">T</div><div class="logo-name">[Your Company]</div></div>`:''}
+    ${s!=="welcome"&&s!=="complete"?`<div class="hdr"><div class="hdr-label">${STEP_LABELS[s]}</div><div class="hdr-count">${step} of ${STEPS.length-2}</div></div>`:''}
+    ${renderStep()}`;
+  bindInputs();
+}
+render();
+</script>
+</body>
+</html>
